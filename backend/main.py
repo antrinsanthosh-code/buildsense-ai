@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import projects
+from routers import projects, plots
 
 app = FastAPI(
     title="BuildSense AI",
@@ -13,8 +13,11 @@ app.add_middleware(
     allow_origins=["*"],
     allow_credentials=True,
     allow_methods=["*"],
-    allow_headers=["*"],    
+    allow_headers=["*"],
 )
+
+app.include_router(projects.router)
+app.include_router(plots.router)
 
 @app.get("/")
 def root():
@@ -22,14 +25,4 @@ def root():
 
 @app.get("/health")
 def health():
-    return {"status": "healthy", "version": "0.1.0"}
-
-app.include_router(projects.router)
-
-@app.get("/")
-def read_root():
-    return {"message": "BuildSense AI backend is running"}  
-
-@app.get("/health")
-def health_check():
     return {"status": "healthy", "version": "0.1.0"}
