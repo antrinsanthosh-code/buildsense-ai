@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import projects, plots, layouts
+from routers import projects, plots, layouts, costs
 
 app = FastAPI(
     title="BuildSense AI",
@@ -19,6 +19,7 @@ app.add_middleware(
 app.include_router(projects.router)
 app.include_router(plots.router)
 app.include_router(layouts.router)
+app.include_router(costs.router)
 
 @app.get("/")
 def root():
