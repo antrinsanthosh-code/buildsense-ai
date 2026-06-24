@@ -5,12 +5,12 @@ import axios from 'axios';
 
 const API = 'https://epidemic-grieving-removal.ngrok-free.dev';
 
-export default function LayoutsScreen() {
-  const [plotSize, setPlotSize]   = useState('3.5');
-  const [location, setLocation]   = useState('Thrissur');
-  const [layouts, setLayouts]     = useState(null);
-  const [loading, setLoading]     = useState(false);
-  const [selected, setSelected]   = useState(null);
+export default function LayoutsScreen({ navigation }) {
+  const [plotSize, setPlotSize] = useState('3.5');
+  const [location, setLocation] = useState('Thrissur');
+  const [layouts, setLayouts]   = useState(null);
+  const [loading, setLoading]   = useState(false);
+  const [selected, setSelected] = useState(null);
 
   const generateLayouts = async () => {
     setLoading(true);
@@ -69,7 +69,7 @@ export default function LayoutsScreen() {
         <TouchableOpacity
           key={i}
           style={[styles.card, selected === i && styles.cardSelected]}
-          onPress={() => setSelected(i)}
+          onPress={() => setSelected(selected === i ? null : i)}
         >
           <View style={styles.cardHeader}>
             <Text style={styles.cardTitle}>{layout.name}</Text>
@@ -111,6 +111,14 @@ export default function LayoutsScreen() {
 
               <Text style={styles.sectionLabel}>Vastu Notes:</Text>
               <Text style={styles.vastuText}>{layout.vastu_notes}</Text>
+
+              <TouchableOpacity
+                style={styles.view3DBtn}
+                onPress={() => navigation.navigate('3D View', { layout })}
+              >
+                <Ionicons name="cube" size={20} color="#fff" />
+                <Text style={styles.view3DBtnText}>View in 3D</Text>
+              </TouchableOpacity>
             </>
           )}
         </TouchableOpacity>
@@ -166,4 +174,15 @@ const styles = StyleSheet.create({
   sectionLabel    : { fontSize: 13, fontWeight: 'bold', color: '#e94560', marginTop: 14, marginBottom: 6 },
   roomItem        : { fontSize: 12, color: '#ccc', marginBottom: 3 },
   vastuText       : { fontSize: 12, color: '#ccc', fontStyle: 'italic' },
+  view3DBtn       : {
+    flexDirection   : 'row',
+    backgroundColor : '#0f3460',
+    padding         : 12,
+    borderRadius    : 8,
+    alignItems      : 'center',
+    justifyContent  : 'center',
+    gap             : 8,
+    marginTop       : 12,
+  },
+  view3DBtnText   : { color: '#fff', fontWeight: 'bold', fontSize: 14 },
 });
